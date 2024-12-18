@@ -1,11 +1,7 @@
-// src/app/page.js
-import Image from "next/image";
-import styles from "./styles/page.module.css";
-
-export default function Home() {
+export default function contact() {
   return (
     <div>
-      <h1>My Portfolio</h1>
+      <h2>Contact</h2>
       {/* <div>
         {projects.map((project) => (
           <div key={project.sys.id}>
