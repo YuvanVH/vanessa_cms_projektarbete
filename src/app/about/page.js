@@ -1,22 +1,32 @@
-import Header from '../components/Header';
+// src/app/about/page.js
 import { fetchPageHeader } from '../lib/graphql';
+import Header from '../components/Header';
 
-export default async function About() {
-  // Hämta pageHeader data direkt i den server-renderade komponenten
-  const pageHeader = await fetchPageHeader('about');
+export default async function AboutPage() {
+  const PageHeader = await fetchPageHeader('About Me');
+
+  const backgroundImage = PageHeader.backgroundImage
+    ? PageHeader.backgroundImage.url
+    : '/default-image.jpg';
+  const logo = PageHeader.logo ? PageHeader.logo.url : '/default-logo.png';
+  const slogan = PageHeader.slogan
+    ? PageHeader.slogan.json.content
+      .map((block) =>
+        block.content.map((innerBlock) => innerBlock.value).join("")
+      )
+      .join("\n")
+    : "Default slogan";
 
   return (
-    <>
+    <div>
       <Header
-        title={pageHeader.title}
-        slogan={pageHeader.slogan}
-        backgroundImage={pageHeader.backgroundImage.url}
-        logo={pageHeader.logo.url}
+        title={PageHeader.title}
+        slogan={slogan}
+        backgroundImage={backgroundImage}
+        logo={logo}
       />
-      <main>
-        <h2>About Us</h2>
-        <p>Welcome to the about page of our site.</p>
-      </main>
-    </>
+      <h2>About Me</h2>
+      <p>Här är information om mig...</p>
+    </div>
   );
 }
