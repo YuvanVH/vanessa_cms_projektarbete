@@ -26,7 +26,7 @@ export default async function AboutPage() {
         logo={logo}
       />
       <h2>About Me</h2>
-      <p>Här är information om mig...</p>
+      <p>Here is information about me...</p>
     </div>
   );
 }

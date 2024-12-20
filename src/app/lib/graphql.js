@@ -48,3 +48,5 @@ export async function fetchPageHeader(pageSlug) {
     return {};
   }
 }
+
+// Project Query (renderar olika projekt)

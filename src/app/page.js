@@ -42,7 +42,7 @@ export default async function Home() {
             top: 0,
             left: 0,
             width: '100%',
-            height: '100%',
+            height: '85vh',
             objectFit: 'cover',
             zIndex: -1, // Se till att videon är i bakgrunden
           }}

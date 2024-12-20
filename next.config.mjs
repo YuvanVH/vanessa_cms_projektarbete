@@ -9,7 +9,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'videos.ctfassets.net', // För Contentful videor (om du använder dem för bakgrundsbilder)
+        hostname: 'videos.ctfassets.net', // För Contentful videor (om du använder dem för bakgrundsbilder) ?????
         pathname: '/**', // Tillåt alla videovägar
       },
     ],
