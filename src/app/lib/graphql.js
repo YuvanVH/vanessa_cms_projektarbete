@@ -49,4 +49,41 @@ export async function fetchPageHeader(pageSlug) {
   }
 }
 
-// Project Query (renderar olika projekt)
+export async function fetchProjects() {
+  const query = `
+    query {
+      projectCollection {
+        items {
+          sys {
+            id
+          }
+          title
+          slug
+          shortDescription
+          fullDescription {
+            json
+          }
+          category {
+            title
+          }
+          projectLink
+          projectImage {
+            title
+            file {
+              url
+              fileName
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await client.request(query);
+    return data.projectCollection.items; // Returnera alla projekt
+  } catch (error) {
+    console.error('Error fetching projects:', error.response ? error.response.errors : error);
+    return []; // Returnera en tom array om något går fel
+  }
+}

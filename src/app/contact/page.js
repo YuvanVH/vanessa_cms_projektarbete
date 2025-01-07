@@ -1,4 +1,4 @@
-// src/app/about/page.js
+// src/app/contact/page.js
 import { fetchPageHeader } from '../lib/graphql';
 import Header from '../components/Header';
 

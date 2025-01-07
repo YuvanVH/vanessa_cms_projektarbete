@@ -16,6 +16,11 @@
   font-family: var(--font-geist-sans);
 }
 
+
+video {
+  transition: opacity 1s ease-in-out;
+}
+
 @media (prefers-color-scheme: dark) {
   .page {
     --gray-rgb: 255, 255, 255;
@@ -54,6 +59,36 @@
   padding: 2px 4px;
   border-radius: 4px;
   font-weight: 600;
+}
+
+/* src/styles/projects.css */
+.projects-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.project-item {
+  background: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.project-item img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.project-item h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.project-item p {
+  font-size: 16px;
+  color: #666;
 }
 
 .ctas {
