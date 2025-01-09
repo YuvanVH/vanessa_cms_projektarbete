@@ -1,36 +1,50 @@
-//src/app/projects/[slug]/page.js
+// src/app/projects/[slug]/page.js
 import { fetchProjectBySlug } from '../../lib/graphql';
 import Header from '../../components/Header';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 export default async function ProjectDetail({ params }) {
-  const project = await fetchProjectBySlug(params.slug);
+  const { slug } = params; // Vänta tills `params` är tillgänglig
 
-  const backgroundImage = project.projectImageCollection?.items?.length
+  // Hämta projektdata
+  const project = await fetchProjectBySlug(slug);
+
+  // Om projektet inte finns, visa en felmeddelande eller en fallback
+  if (!project) {
+    return <div>Project not found</div>;
+  }
+
+  const backgroundImage = project?.projectImageCollection?.items?.length
     ? project.projectImageCollection.items[0]?.url
     : '/default-image.jpg';
+
+  // Rendera full beskrivning
+  const renderFullDescription = project?.fullDescription?.json
+    ? documentToReactComponents(project.fullDescription.json)
+    : "No description available";
 
   return (
     <div>
       <Header
-        title={project.projectTitle}
+        title={project?.projectTitle || "Project Details"}
         slogan="Discover the project details"
         backgroundImage={backgroundImage}
         logo="/default-logo.png"
       />
 
       <div>
-        <h1>{project.projectTitle}</h1>
+        <h1>{project?.projectTitle}</h1>
 
-        {/* Visa full beskrivning */}
-        <p>{project.fullDescription ? project.fullDescription.json : "No description available"}</p>
+        {/* Rendera full beskrivning */}
+        <div>{renderFullDescription}</div>
 
         {/* Visa kategori */}
-        {project.category && project.category.title && (
-          <p className="text-sm text-gray-500">Category: {project.category.title}</p>
+        {project?.category?.projectTitle && (
+          <p className="text-sm text-gray-500">Category: {project.category.projectTitle}</p>
         )}
 
         {/* Visa projektlänk */}
-        {project.projectLink && (
+        {project?.projectLink && (
           <a href={project.projectLink} target="_blank" rel="noopener noreferrer">
             Visit Project
           </a>
@@ -38,7 +52,7 @@ export default async function ProjectDetail({ params }) {
 
         {/* Visa bilder */}
         <div className="image-gallery">
-          {project.projectImageCollection.items.map((image, index) => (
+          {project?.projectImageCollection?.items?.map((image, index) => (
             <div key={index} className="image-item">
               <img
                 src={image.url}

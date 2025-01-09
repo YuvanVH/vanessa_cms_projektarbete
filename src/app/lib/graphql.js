@@ -86,37 +86,40 @@ export async function fetchProjects() {
 
 export async function fetchProjectBySlug(slug) {
   const query = `
-    query GetProjectBySlug($slug: String!) {
-      projectCollection(where: { slug: $slug }, limit: 1) {
-        items {
-          sys {
-            id
+  query GetProjectBySlug($slug: String!) {
+    projectCollection(where: { slug: $slug }, limit: 1) {
+      items {
+        sys {
+          id
+        }
+        projectTitle
+        slug
+        fullDescription {
+          json
+        }
+        projectLink
+        category {
+          ... on Category {
+            projectTitle
           }
-          projectTitle
-          slug
-          fullDescription {
-            json
-          }
-          projectLink
-          category {
+        }
+        projectImageCollection {
+          items {
+            url
             title
-          }
-          projectImageCollection {
-            items {
-              url
-              title
-            }
           }
         }
       }
     }
+  }
   `;
 
+  // Här skickar variabeln slug när man gör förfrågan
   try {
-    const variables = { slug };
-    const data = await client.request(query, variables);
+    const variables = { slug }; // Variabeln skickas med här
+    const data = await client.request(query, variables); // Förfrågan med variabeln
     console.log("Fetched project by slug:", data);
-    return data.projectCollection.items[0] || null; // Returnera första projektet eller null
+    return data.projectCollection.items[0] || null; // Returnera projektet om det finns
   } catch (error) {
     console.error("Error fetching project by slug:", error);
     return null;
