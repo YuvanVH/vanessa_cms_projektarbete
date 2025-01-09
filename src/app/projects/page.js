@@ -1,4 +1,4 @@
-// src/app/projects/[slug]/page.js
+// src/app/projects/page.js
 import { fetchPageHeader, fetchProjects } from '../lib/graphql';
 import Header from '../components/Header';
 
@@ -6,11 +6,13 @@ export default async function ProjectsPage() {
   const pageHeader = await fetchPageHeader('My Projects'); // Hämta headerdata för projektsidan
   const projects = await fetchProjects(); // Hämta alla projekt
 
-  const backgroundImage = pageHeader.backgroundImage
-    ? pageHeader.backgroundImage.url
-    : '/default-image.jpg';
-  const logo = pageHeader.logo ? pageHeader.logo.url : '/default-logo.png';
-  const slogan = pageHeader.slogan
+  // Logga projekten för att validera data
+  console.log('Fetched projects:', projects);
+
+  // Default-värden om något saknas
+  const backgroundImage = pageHeader?.backgroundImage?.url || '/default-image.jpg';
+  const logo = pageHeader?.logo?.url || '/default-logo.png';
+  const slogan = pageHeader?.slogan
     ? pageHeader.slogan.json.content
       .map((block) =>
         block.content.map((innerBlock) => innerBlock.value).join("")
@@ -22,26 +24,30 @@ export default async function ProjectsPage() {
     <div>
       {/* Header-komponenten */}
       <Header
-        title={pageHeader.title} // Dynamisk titel för projektsidan
+        title={pageHeader?.title || "Projects"} // Dynamisk titel för projektsidan
         slogan={slogan} // Dynamisk slogan
         backgroundImage={backgroundImage} // Dynamisk bakgrundsbild
         logo={logo} // Dynamisk logotyp
       />
 
       {/* Projekten */}
-      <div className="projects-list">
-        {projects.map((project) => (
-          <div key={project.sys.id} className="project-item">
-            <h2>{project.title}</h2>
-            <p>{project.shortDescription}</p>
-            {project.projectImage && (
+      <div className="projects-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
+        {projects.map((project, index) => (
+          <div key={project.sys.id || index} className="project-item shadow-lg rounded-lg">
+            <h2 className="text-xl font-bold">{project.projectTitle || 'Untitled Project'}</h2>
+            <p className="text-gray-600">{project.shortDescription || 'No description available'}</p>
+            {project.projectImageCollection?.items?.[0]?.url && (
               <img
-                src={project.projectImage[0]?.file.url}
-                alt={project.projectImage[0]?.title}
-                style={{ width: '100%', maxHeight: '300px', objectFit: 'cover' }}
+                src={project.projectImageCollection.items[0].url}
+                alt={project.projectImageCollection.items[0].title || 'Project Image'}
+                style={{
+                  width: '100%',
+                  maxHeight: '300px',
+                  objectFit: 'cover',
+                }}
               />
             )}
-            <a href={`/projects/${project.slug}`} className="project-link">
+            <a href={`/projects/${project.slug}`} className="project-link text-blue-500 hover:underline mt-4 block">
               View Details
             </a>
           </div>

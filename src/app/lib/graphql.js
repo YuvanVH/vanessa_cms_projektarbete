@@ -49,29 +49,23 @@ export async function fetchPageHeader(pageSlug) {
   }
 }
 
+// Hämtar projekt
 export async function fetchProjects() {
   const query = `
-    query {
+    query GetProjects {
       projectCollection {
         items {
           sys {
             id
           }
-          title
+          projectTitle
           slug
           shortDescription
-          fullDescription {
-            json
-          }
-          category {
-            title
-          }
           projectLink
-          projectImage {
-            title
-            file {
+          projectImageCollection {
+            items {
               url
-              fileName
+              title
             }
           }
         }
@@ -80,10 +74,51 @@ export async function fetchProjects() {
   `;
 
   try {
+    // Använd samma klient som i fetchPageHeader
     const data = await client.request(query);
-    return data.projectCollection.items; // Returnera alla projekt
+    console.log("Fetched projects data:", data);
+    return data.projectCollection.items || [];
   } catch (error) {
-    console.error('Error fetching projects:', error.response ? error.response.errors : error);
-    return []; // Returnera en tom array om något går fel
+    console.error("Error fetching projects:", error);
+    return [];
+  }
+}
+
+export async function fetchProjectBySlug(slug) {
+  const query = `
+    query GetProjectBySlug($slug: String!) {
+      projectCollection(where: { slug: $slug }, limit: 1) {
+        items {
+          sys {
+            id
+          }
+          projectTitle
+          slug
+          fullDescription {
+            json
+          }
+          projectLink
+          category {
+            title
+          }
+          projectImageCollection {
+            items {
+              url
+              title
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const variables = { slug };
+    const data = await client.request(query, variables);
+    console.log("Fetched project by slug:", data);
+    return data.projectCollection.items[0] || null; // Returnera första projektet eller null
+  } catch (error) {
+    console.error("Error fetching project by slug:", error);
+    return null;
   }
 }
