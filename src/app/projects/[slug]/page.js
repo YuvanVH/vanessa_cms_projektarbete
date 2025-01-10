@@ -15,7 +15,7 @@ export default async function ProjectDetail({ params }) {
   }
 
   const backgroundImage = project?.projectImageCollection?.items?.length
-    ? project.projectImageCollection.items[0]?.url
+    ? project.projectImageCollection.items[1]?.url // tar bild nr 2 som bakgrund från contentful
     : '/default-image.jpg';
 
   // Rendera full beskrivning

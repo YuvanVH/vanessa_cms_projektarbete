@@ -19,8 +19,8 @@ export default function Header({ title, slogan, backgroundImage, logo }) {
                 <Image
                   src={logo} // Logo som kommer från Contentful
                   alt="Logo image"
-                  width={124}  // Bildens storlek
-                  height={124} // Bildens storlek
+                  width={164}  // Bildens storlek
+                  height={154} // Bildens storlek
                   priority // Prioritera denna bild för snabbare laddning
                 />
               ) : (

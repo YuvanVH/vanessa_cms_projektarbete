@@ -41,12 +41,14 @@ export default async function ProjectsPage() {
                 src={project.projectImageCollection.items[0].url}
                 alt={project.projectImageCollection.items[0].title || 'Project Image'}
                 style={{
-                  width: '100%',
+                  width: '50%',
                   maxHeight: '300px',
                   objectFit: 'cover',
                 }}
               />
             )}
+            <a href={project.projectLink}>View Github
+            </a>
             <a href={`/projects/${project.slug}`} className="project-link text-blue-500 hover:underline mt-4 block">
               View Details
             </a>
