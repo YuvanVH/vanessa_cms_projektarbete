@@ -1,21 +1,24 @@
-// src/app/projects/[slug]/page.js
-
+//src/app/components/ProjectDetail.js
 import { fetchProjectBySlug } from '../../lib/graphql';
 import Header from '../../components/Header';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import Link from 'next/link';
 
 export default async function ProjectDetail({ params }) {
-  const { slug } = params;
+  const { slug } = params; // Vänta tills `params` är tillgänglig
 
   // Hämta projektdata
   const project = await fetchProjectBySlug(slug);
 
+  // Om projektet inte finns, visa en felmeddelande eller en fallback
   if (!project) {
     return <div>Project not found</div>;
   }
 
-  const backgroundImage = project?.projectImageCollection?.items?.[1]?.url || '/default-image.jpg';
+  const backgroundImage = project?.projectImageCollection?.items?.length
+    ? project.projectImageCollection.items[1]?.url // tar bild nr 2 som bakgrund från contentful
+    : '/default-image.jpg';
+
+  // Rendera full beskrivning
   const renderFullDescription = project?.fullDescription?.json
     ? documentToReactComponents(project.fullDescription.json)
     : "No description available";
@@ -35,15 +38,22 @@ export default async function ProjectDetail({ params }) {
         {/* Rendera full beskrivning */}
         <div>{renderFullDescription}</div>
 
-        {/* Klickbar kategori */}
-        {project?.category && (
-          <p className="text-sm text-gray-500">
-            Category:{" "}
-            <Link href={`/category/${project.category.slug}`}>
-              <a className="text-blue-500 underline">{project.category.title}</a>
-            </Link>
-          </p>
+        {/* Visa kategori */}
+        // Visa kategori
+        {Array.isArray(project?.category) ? (
+          project.category.map((category) => (
+            <p key={category.slug} className="text-sm text-gray-500">
+              Category: {category.title}
+            </p>
+          ))
+        ) : (
+          project.category && (
+            <p className="text-sm text-gray-500">
+              Category: {project.category.title}
+            </p>
+          )
         )}
+
 
         {/* Visa projektlänk */}
         {project?.projectLink && (
@@ -58,14 +68,15 @@ export default async function ProjectDetail({ params }) {
             <div key={index} className="image-item">
               <img
                 src={image.url}
-                alt={image.title}
-                title={image.title}
+                alt={image.title || "Project Image"}
+                title={image.title || "Project Image"}
                 className="rounded-lg"
                 style={{ width: '100%', height: 'auto' }}
               />
             </div>
           ))}
         </div>
+
       </div>
     </div>
   );

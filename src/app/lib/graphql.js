@@ -1,7 +1,11 @@
 // src/app/lib/graphql.js
+
 import { GraphQLClient } from 'graphql-request';
 
-// Contentful GraphQL endpoint
+// console.log("CONTENTFUL_ACCESS_TOKEN:", process.env.CONTENTFUL_ACCESS_TOKEN);
+
+// console.log(process.env);
+
 const client = new GraphQLClient(
   'https://graphql.contentful.com/content/v1/spaces/dwkm02rqep4b',
   {
@@ -10,6 +14,29 @@ const client = new GraphQLClient(
     },
   }
 );
+
+
+// Funktion för att hämta alla kategorier
+export async function fetchCategories() {
+  const query = `
+    query GetCategories {
+      categoryCollection {
+        items {
+          title
+          slug
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await client.request(query);
+    return data.categoryCollection.items || [];
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
+  }
+}
 
 export async function fetchPageHeader(pageSlug) {
   const query = `
@@ -49,7 +76,6 @@ export async function fetchPageHeader(pageSlug) {
   }
 }
 
-// Hämtar projekt
 export async function fetchProjects() {
   const query = `
     query GetProjects {
@@ -68,13 +94,18 @@ export async function fetchProjects() {
               title
             }
           }
+          category {
+            ... on Category {
+              title
+              slug
+            }
+          }
         }
       }
     }
   `;
 
   try {
-    // Använd samma klient som i fetchPageHeader
     const data = await client.request(query);
     console.log("Fetched projects data:", data);
     return data.projectCollection.items || [];
@@ -86,42 +117,67 @@ export async function fetchProjects() {
 
 export async function fetchProjectBySlug(slug) {
   const query = `
-  query GetProjectBySlug($slug: String!) {
-    projectCollection(where: { slug: $slug }, limit: 1) {
-      items {
-        sys {
-          id
-        }
-        projectTitle
-        slug
-        fullDescription {
-          json
-        }
-        projectLink
-        category {
-          ... on Category {
-            projectTitle
+    query GetProjectBySlug($slug: String!) {
+      projectCollection(where: { slug: $slug }, limit: 1) {
+        items {
+          sys {
+            id
           }
-        }
-        projectImageCollection {
-          items {
-            url
-            title
+          projectTitle
+          slug
+          fullDescription {
+            json
+          }
+          projectImageCollection {
+            items {
+              url
+              title
+            }
+          }
+          category {
+            ... on Category {
+              title
+              slug
+            }
           }
         }
       }
     }
-  }
   `;
 
-  // Här skickar variabeln slug när man gör förfrågan
   try {
-    const variables = { slug }; // Variabeln skickas med här
-    const data = await client.request(query, variables); // Förfrågan med variabeln
-    console.log("Fetched project by slug:", data);
-    return data.projectCollection.items[0] || null; // Returnera projektet om det finns
+    const variables = { slug };
+    const data = await client.request(query, variables);
+    return data.projectCollection.items[0] || null; // Return the first project or null if not found
   } catch (error) {
     console.error("Error fetching project by slug:", error);
+    return null;
+  }
+}
+
+// Hämta kategori baserat på slug
+export async function fetchCategoryBySlug(slug) {
+  const query = `
+    query GetCategoryBySlug($slug: String!) {
+      categoryCollection(where: {slug: $slug}) {
+        items {
+          title
+          description
+          projects {
+            projectTitle
+            slug
+            shortDescription
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await client.request(query, { slug });
+    return data.categoryCollection.items[0] || null; // Returnera den första kategorin eller null
+  } catch (error) {
+    console.error("Error fetching category by slug:", error);
     return null;
   }
 }
