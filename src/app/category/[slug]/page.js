@@ -2,7 +2,7 @@
 import Header from "../../components/Header";
 import ProjectsList from "../../components/ProjectsList";
 import { fetchCategoryBySlug, fetchProjects } from "../../lib/graphql";
-import SearchBar from "../../components/SearchBar";
+
 
 export default async function CategoryPage({ params, searchParams }) {
   const { slug } = params; // Hämta slugen för kategorin
@@ -47,7 +47,7 @@ export default async function CategoryPage({ params, searchParams }) {
         backgroundImage={backgroundImage}
         logo="/default-logo.png"
       />
-      <SearchBar />
+      {/* Använd den globala sökbaren här */}
       <ProjectsList projects={searchedProjects} />
     </div>
   );
