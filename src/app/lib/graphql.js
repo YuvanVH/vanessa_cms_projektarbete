@@ -229,3 +229,39 @@ export async function filterProjectsByCategory(categorySlug) {
     return [];
   }
 }
+
+export async function fetchErrorPage() {
+  const query = `
+    query {
+      errorPageCollection(limit: 1) {
+        items {
+          title
+          errorMessage {
+            json
+          }
+          errorImage {
+            url
+          }
+          cta
+          backgroundImage {
+            url
+          }
+          logo {
+            url
+          }
+          slogan {
+            json
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await client.request(query);
+    return data.errorPageCollection.items[0] || null; // Returnera första error-sidan
+  } catch (error) {
+    console.error('Error fetching error page:', error);
+    return null; // Hantera fel
+  }
+}
