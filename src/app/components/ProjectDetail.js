@@ -39,21 +39,15 @@ export default async function ProjectDetail({ params }) {
         <div>{renderFullDescription}</div>
 
         {/* Visa kategori */}
-        // Visa kategori
-        {Array.isArray(project?.category) ? (
-          project.category.map((category) => (
+        {Array.isArray(project?.categoryCollection?.items) ? (
+          project.categoryCollection.items.map((category) => (
             <p key={category.slug} className="text-sm text-gray-500">
               Category: {category.title}
             </p>
           ))
         ) : (
-          project.category && (
-            <p className="text-sm text-gray-500">
-              Category: {project.category.title}
-            </p>
-          )
+          <p className="text-sm text-gray-500">No categories available</p>
         )}
-
 
         {/* Visa projektlänk */}
         {project?.projectLink && (
@@ -68,7 +62,7 @@ export default async function ProjectDetail({ params }) {
             <div key={index} className="image-item">
               <img
                 src={image.url}
-                alt={image.title || "Project Image"}
+                // alt={image.title || "Project Image"}
                 title={image.title || "Project Image"}
                 className="rounded-lg"
                 style={{ width: '100%', height: 'auto' }}
@@ -76,7 +70,6 @@ export default async function ProjectDetail({ params }) {
             </div>
           ))}
         </div>
-
       </div>
     </div>
   );

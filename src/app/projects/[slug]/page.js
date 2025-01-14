@@ -1,5 +1,4 @@
 // src/app/projects/[slug]/page.js
-
 import { fetchProjectBySlug } from '../../lib/graphql';
 import Header from '../../components/Header';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
@@ -15,7 +14,7 @@ export default async function ProjectDetail({ params }) {
     return <div>Project not found</div>;
   }
 
-  const backgroundImage = project?.projectImageCollection?.items?.[1]?.url || '/default-image.jpg';
+  const backgroundImage = project?.projectImageCollection?.items?.[0]?.url || '/default-image.jpg';
   const renderFullDescription = project?.fullDescription?.json
     ? documentToReactComponents(project.fullDescription.json)
     : "No description available";
@@ -28,7 +27,6 @@ export default async function ProjectDetail({ params }) {
         backgroundImage={backgroundImage}
         logo="/default-logo.png"
       />
-
       <div>
         <h1>{project?.projectTitle}</h1>
 
@@ -36,11 +34,13 @@ export default async function ProjectDetail({ params }) {
         <div>{renderFullDescription}</div>
 
         {/* Klickbar kategori */}
-        {project?.category && (
+        {project?.categoryCollection?.items?.length > 0 && (
           <p className="text-sm text-gray-500">
             Category:{" "}
-            <Link href={`/category/${project.category.slug}`}>
-              <a className="text-blue-500 underline">{project.category.title}</a>
+            <Link
+              href={`/category/${project.categoryCollection.items[0].slug}`}
+              className="text-blue-500 underline">
+              {project.categoryCollection.items[0].title}
             </Link>
           </p>
         )}

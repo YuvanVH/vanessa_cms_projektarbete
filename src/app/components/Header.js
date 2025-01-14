@@ -5,7 +5,7 @@ import styles from '../styles/header.module.css';
 
 export default function Header({ title, slogan, backgroundImage, logo }) {
   return (
-    <header
+    (<header
       className={styles.hero}
       style={{ backgroundImage: `url(${backgroundImage})` }} // Dynamiskt sätta bakgrundsbild
     >
@@ -13,18 +13,18 @@ export default function Header({ title, slogan, backgroundImage, logo }) {
         <div className={styles.container}> {/* Container för all layout */}
           {/* Logo och meny */}
           <div className={styles.mainMenuHeaderContainer}>
-            <Link href="/" className={styles.logoHeader}>
+            <Link href="/" className={styles.logoHeader} legacyBehavior>
               {logo ? (
                 // Om logo finns, visa den. Annars visa texten "My Portfolio"
-                <Image
+                (<Image
                   src={logo} // Logo som kommer från Contentful
                   alt="Logo image"
                   width={164}  // Bildens storlek
                   height={154} // Bildens storlek
                   priority // Prioritera denna bild för snabbare laddning
-                />
+                />)
               ) : (
-                <span className={styles.logoText}>My Portfolio</span> // Om ingen logo är tillgänglig, visa texten istället
+                (<span className={styles.logoText}>My Portfolio</span>) // Om ingen logo är tillgänglig, visa texten istället
               )}
             </Link>
 
@@ -54,6 +54,6 @@ export default function Header({ title, slogan, backgroundImage, logo }) {
           </div>
         </div>
       </div>
-    </header>
+    </header>)
   );
 }

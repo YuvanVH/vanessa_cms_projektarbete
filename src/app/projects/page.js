@@ -1,24 +1,21 @@
 // src/app/projects/page.js
-
 import Header from "../components/Header";
 import ProjectsList from "../components/ProjectsList";
 import SearchBar from "../components/SearchBar";
-import { fetchPageHeader, fetchProjects } from "../lib/graphql";
+import { fetchPageHeader, fetchProjects } from "../lib/graphql"; // Korrekt import
 
-// Nu använder man `searchParams` från `props` för att filtrera projekt
 export default async function ProjectsPage({ searchParams }) {
-  const pageHeader = await fetchPageHeader("My Projects"); // Hämta headerdata för projektsidan
-  const allProjects = await fetchProjects(); // Hämta alla projekt
+  const searchTerm = searchParams?.search || ""; // Hämta sökparametern eller sätt till en tom sträng om ingen finns.
 
-  // Hämta söksträngen från URL:en via `searchParams`
-  const searchTerm = searchParams?.search || ""; // Om inget sökord finns, sätt till en tom sträng
+  // Hämta sidhuvud och projektdata
+  const pageHeader = await fetchPageHeader("My Projects");
+  const allProjects = await fetchProjects();
 
-  // Filtrera projekten baserat på söksträngen
+  // Filtrera projekten baserat på sökterm
   const filteredProjects = allProjects.filter((project) =>
     project.projectTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Skapa värden för headern
   const title = pageHeader?.title || "My Projects";
   const backgroundImage = pageHeader?.backgroundImage?.url || "/default-image.jpg";
   const logo = pageHeader?.logo?.url || "/default-logo.png";
@@ -38,7 +35,8 @@ export default async function ProjectsPage({ searchParams }) {
         backgroundImage={backgroundImage}
         logo={logo}
       />
-      <SearchBar /> {/* Bara visa sökfältet utan att hantera sökningen här */}
+      <SearchBar />
+      {/* Skicka den filtrerade projekten */}
       <ProjectsList projects={filteredProjects} />
     </div>
   );

@@ -1,86 +1,54 @@
 //src/app/category/[slug]/page.js
-
 import Header from "../../components/Header";
 import ProjectsList from "../../components/ProjectsList";
-import { fetchPageHeader, fetchProjects } from "../../lib/graphql";
+import { fetchCategoryBySlug, fetchProjects } from "../../lib/graphql";
+import SearchBar from "../../components/SearchBar";
 
-export default async function CategoryPage({ params }) {
+export default async function CategoryPage({ params, searchParams }) {
   const { slug } = params; // Hämta slugen för kategorin
+  const searchTerm = searchParams?.search || ""; // Hämta sökparametern från URL eller sätt till tom sträng om ingen finns.
 
-  const pageHeader = await fetchPageHeader("Category"); // Hämta sidhuvudets data
+  // Hämta kategori och projekt
+  const category = await fetchCategoryBySlug(slug);
+
+  if (!category) {
+    return <div>Category not found. Please check the slug or contact support.</div>;
+  }
+
   const allProjects = await fetchProjects(); // Hämta alla projekt
 
-  // Filtrera projekten baserat på kategorislugen
-  const filteredProjects = allProjects.filter(
-    (project) => project.category?.slug === slug
+  // Filtrera projekten baserat på den hämtade kategorins slug
+  const filteredProjects = allProjects.filter((project) =>
+    project?.categoryCollection?.items?.some(
+      (cat) => cat.slug === category.slug
+    )
   );
 
-  // Skapa värden för headern
-  const title = pageHeader?.title || "Category";
-  const backgroundImage = pageHeader?.backgroundImage?.url || "/default-image.jpg";
-  const logo = pageHeader?.logo?.url || "/default-logo.png";
+  // Om en sökterm finns, filtrera projekten baserat på sökordet i projektets titel eller beskrivning
+  const searchedProjects = filteredProjects.filter((project) => {
+    const titleMatch = project.projectTitle
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const descriptionMatch = project.shortDescription
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    return titleMatch || descriptionMatch; // Matchar både titel och beskrivning
+  });
+
+  // Använd kategoridata för headern
+  const title = category?.title || "Category";
+  const backgroundImage = category?.backgroundImage?.url || "/default-image.jpg";
 
   return (
     <div>
       <Header
         title={title}
-        slogan={`Projects under category: ${slug}`}
+        slogan={`Projects under category: ${category.title}`}
         backgroundImage={backgroundImage}
-        logo={logo}
+        logo="/default-logo.png"
       />
-
-      {/* Rendera filtrerade projekt */}
-      <ProjectsList projects={filteredProjects} />
+      <SearchBar />
+      <ProjectsList projects={searchedProjects} />
     </div>
   );
 }
-
-
-
-// import Header from "../../components/Header";
-// import ProjectsList from "../../components/ProjectsList";
-// import SearchBar from "../../components/SearchBar";
-// import { fetchPageHeader, fetchProjects } from "../../lib/graphql";
-
-// TODO: hämta från project
-// gör som projectlist men gör om kategori slugs till länk
-// renderar endast ut projekten med slugs-kategori på den länken
-
-// Nu använder man `searchParams` från `props` för att filtrera projekt
-// export default async function ProjectsPage({ searchParams }) {
-//   const pageHeader = await fetchPageHeader("My Projects"); // Hämta headerdata för projektsidan
-//   const allProjects = await fetchProjects(); // Hämta alla projekt
-
-//   // Hämta söksträngen från URL:en via `searchParams`
-//   const searchTerm = searchParams?.search || ""; // Om inget sökord finns, sätt till en tom sträng
-
-//   // Filtrera projekten baserat på söksträngen
-//   const filteredProjects = allProjects.filter((project) =>
-//     project.projectTitle.toLowerCase().includes(searchTerm.toLowerCase())
-//   );
-
-//   // Skapa värden för headern
-//   const title = pageHeader?.title || "My Projects";
-//   const backgroundImage = pageHeader?.backgroundImage?.url || "/default-image.jpg";
-//   const logo = pageHeader?.logo?.url || "/default-logo.png";
-//   const slogan = pageHeader?.slogan
-//     ? pageHeader.slogan.json.content
-//       .map((block) =>
-//         block.content.map((innerBlock) => innerBlock.value).join("")
-//       )
-//       .join("\n")
-//     : "Default slogan";
-
-//   return (
-//     <div>
-//       <Header
-//         title={title}
-//         slogan={slogan}
-//         backgroundImage={backgroundImage}
-//         logo={logo}
-//       />
-//       <SearchBar /> {/* Bara visa sökfältet utan att hantera sökningen här */}
-//       <ProjectsList projects={filteredProjects} />
-//     </div>
-//   );
-// }
