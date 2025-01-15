@@ -1,4 +1,3 @@
-// src/app/404/page.js
 import { fetchErrorPage } from './lib/graphql';
 import Header from './components/Header';
 
@@ -60,9 +59,39 @@ export default async function ErrorPage() {
         backgroundImage={errorPage?.backgroundImage?.url || '/default-image.jpg'}
         logo={errorPage?.logo?.url || '/default-logo.png'}
       />
+
       <div>
         {/* Renderar error message content */}
         {renderErrorMessage(errorPage?.errorMessage?.json?.content) || 'Error message not available'}
+
+        {/* Error Image */}
+        {errorPage.errorImage?.url && (
+          <img
+            src={errorPage.errorImage.url}
+            alt="Error Image"
+            style={{ maxWidth: '100%', marginTop: '20px' }}
+          />
+        )}
+
+        {/* CTA Button */}
+        {errorPage.cta && (
+          <a
+            href={errorPage.cta}
+            style={{
+              display: 'inline-block',
+              marginTop: '20px',
+              padding: '10px 20px',
+              backgroundColor: 'black',
+              border:
+                '2px solid white',
+              color: '#fff',
+              textDecoration: 'none',
+              borderRadius: '5px'
+            }}
+          >
+            Go Back Home
+          </a>
+        )}
       </div>
     </div>
   );

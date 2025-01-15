@@ -4,7 +4,8 @@ import ProjectsList from "../components/ProjectsList";
 import SearchBar from "../components/SearchBar";
 import { fetchPageHeader, fetchProjects } from "../lib/graphql"; // Korrekt import
 
-export default async function ProjectsPage({ searchParams }) {
+export default async function ProjectsPage(props) {
+  const searchParams = await props.searchParams;
   const searchTerm = searchParams?.search || ""; // Hämta sökparametern eller sätt till en tom sträng om ingen finns.
 
   // Hämta sidhuvud och projektdata

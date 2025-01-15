@@ -4,7 +4,9 @@ import ProjectsList from "../../components/ProjectsList";
 import { fetchCategoryBySlug, fetchProjects } from "../../lib/graphql";
 
 
-export default async function CategoryPage({ params, searchParams }) {
+export default async function CategoryPage(props) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const { slug } = params; // Hämta slugen för kategorin
   const searchTerm = searchParams?.search || ""; // Hämta sökparametern från URL eller sätt till tom sträng om ingen finns.
 

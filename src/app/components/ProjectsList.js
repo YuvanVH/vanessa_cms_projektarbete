@@ -9,7 +9,7 @@ export default function ProjectsList({ projects }) {
 
   // Uppdatera filteredProjects när props.projects ändras
   useEffect(() => {
-    console.log("Received projects:", projects); // Logga för att se om data skickas in korrekt
+    // console.log("Received projects:", projects); // Logga för att se om data skickas in korrekt
     setFilteredProjects(projects);
   }, [projects]);
 

@@ -4,7 +4,8 @@ import Header from '../../components/Header';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Link from 'next/link';
 
-export default async function ProjectDetail({ params }) {
+export default async function ProjectDetail(props) {
+  const params = await props.params;
   const { slug } = params;
 
   // Hämta projektdata

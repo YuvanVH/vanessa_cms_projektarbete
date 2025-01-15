@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { fetchProjects } from "../lib/graphql";
 import ProjectsList from "../components/ProjectsList";
 
-export default async function SearchPage({ searchParams }) {
+export default async function SearchPage(props) {
+  const searchParams = await props.searchParams;
   const router = useRouter();
   const searchTerm = searchParams?.search || ""; // Hämta sökparametern från URL
 
