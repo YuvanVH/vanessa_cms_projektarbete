@@ -2,20 +2,27 @@
 import Header from "../components/Header";
 import ProjectsList from "../components/ProjectsList";
 import SearchBar from "../components/SearchBar";
-import { fetchPageHeader, fetchProjects } from "../lib/graphql"; // Korrekt import
+import { fetchPageHeader, fetchProjects } from "../lib/graphql";
 
 export default async function ProjectsPage(props) {
-  const searchParams = await props.searchParams;
-  const searchTerm = searchParams?.search || ""; // Hämta sökparametern eller sätt till en tom sträng om ingen finns.
+  const searchParams = props.searchParams || {};
+  const searchTerm = searchParams.search || "";
 
   // Hämta sidhuvud och projektdata
   const pageHeader = await fetchPageHeader("My Projects");
   const allProjects = await fetchProjects();
 
-  // Filtrera projekten baserat på sökterm
-  const filteredProjects = allProjects.filter((project) =>
-    project.projectTitle.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filtrera projekten baserat på sökterm (inklusive kategori)
+  const filteredProjects = allProjects.filter((project) => {
+    const searchInCategories = project.categoryCollection.items.some((category) =>
+      category.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const searchInTitleOrDescription =
+      project.projectTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.shortDescription.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return searchInTitleOrDescription || searchInCategories;
+  });
 
   const title = pageHeader?.title || "My Projects";
   const backgroundImage = pageHeader?.backgroundImage?.url || "/default-image.jpg";
@@ -36,8 +43,8 @@ export default async function ProjectsPage(props) {
         backgroundImage={backgroundImage}
         logo={logo}
       />
-      <SearchBar />
-      {/* Skicka den filtrerade projekten */}
+      <SearchBar initialSearchTerm={searchTerm} resultCount={filteredProjects.length} />
+      {/* Skicka de filtrerade projekten */}
       <ProjectsList projects={filteredProjects} />
     </div>
   );
