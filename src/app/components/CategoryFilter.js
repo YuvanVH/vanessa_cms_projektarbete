@@ -1,59 +1,47 @@
 // src/app/components/CategoryFilter.js
-// src/app/components/CategoryFilter.js
 "use client";
 
 import { useState } from "react";
 
+// Komponent för att filtrera projekt baserat på valda kategorier
 export default function CategoryFilter({ categories, onCategoryChange }) {
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  const handleSelectCategory = (slug) => {
-    if (!selectedCategories.includes(slug)) {
-      const updated = [...selectedCategories, slug];
-      setSelectedCategories(updated);
-      onCategoryChange(updated); // Skicka till föräldrakomponenten
-    }
+  // Hantera val av kategori
+  const handleCategoryChange = (event) => {
+    const category = event.target.value; // Hämta vald kategori
+    setSelectedCategory(category); // Uppdatera den valda kategorin i state
+    onCategoryChange(category); // Skicka den valda kategorin till föräldrakomp.
   };
 
-  const handleRemoveCategory = (slug) => {
-    const updated = selectedCategories.filter((category) => category !== slug);
-    setSelectedCategories(updated);
-    onCategoryChange(updated); // Skicka till föräldrakomponenten
-  };
+  // Skapa en lista med unika kategorier (utan dubbletter)
+  const uniqueCategories = [
+    ...new Map(categories.map((category) => [category.slug, category])).values(),
+  ];
 
   return (
-    <div>
+    <div style={{ marginBottom: "20px", textAlign: "center" }}>
+      {/* Dropdown-meny för att välja kategori */}
       <select
-        onChange={(e) => handleSelectCategory(e.target.value)}
-        defaultValue=""
+        value={selectedCategory}
+        onChange={handleCategoryChange}
+        style={{
+          padding: "10px",
+          fontSize: "16px",
+          border: "1px solid #ccc",
+          borderRadius: "5px",
+          width: "200px",
+          // backgroundColor: "#f9f9f9",
+          // color: "#333",
+        }}
       >
-        <option value="">Select Category</option>
-        {categories.map((category) => (
-          <option key={category.slug} value={category.slug}>
+        <option value="">All Categories</option>
+        {uniqueCategories.map((category, index) => (
+          <option key={`${category.slug}-${index}`} value={category.slug}>
             {category.title}
           </option>
         ))}
       </select>
-
-      <div style={{ marginTop: "10px" }}>
-        {selectedCategories.map((slug) => (
-          <span
-            key={slug}
-            style={{
-              display: "inline-block",
-              backgroundColor: "#e0e0e0",
-              borderRadius: "15px",
-              padding: "5px 10px",
-              margin: "5px",
-              cursor: "pointer",
-            }}
-            onClick={() => handleRemoveCategory(slug)}
-          >
-            {categories.find((cat) => cat.slug === slug)?.title}
-            <span style={{ marginLeft: "10px", color: "red" }}>✕</span>
-          </span>
-        ))}
-      </div>
     </div>
   );
 }
