@@ -1,5 +1,5 @@
 // src/app/components/ProjectsClient.js
-// src/app/components/ProjectsClient.js
+
 "use client";
 
 import { useState, useEffect } from "react";
