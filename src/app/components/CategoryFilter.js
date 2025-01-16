@@ -27,6 +27,7 @@ export default function CategoryFilter({ categories, onCategoryChange }) {
         onChange={handleCategoryChange}
         style={{
           padding: "10px",
+          margin: "10px",
           fontSize: "16px",
           border: "1px solid #ccc",
           borderRadius: "5px",
