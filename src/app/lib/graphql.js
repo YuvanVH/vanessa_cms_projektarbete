@@ -14,7 +14,6 @@ const client = new GraphQLClient(
   }
 );
 
-
 // Funktion för att hämta alla kategorier
 export async function fetchCategories() {
   const query = `
@@ -263,5 +262,69 @@ export async function fetchErrorPage() {
   } catch (error) {
     console.error('Error fetching error page:', error);
     return null; // Hantera fel
+  }
+}
+
+export async function fetchSEOMetadata(slug) {
+  const query = `
+    query GetSEOMetadata($slug: String!) {
+      seoMetadataCollection(where: { slug: $slug }, limit: 1) {
+        items {
+          seoTitle
+          seoDescription {
+            json
+          }
+          seoImage {
+            url
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await client.request(query, { slug });
+    if (data.seoMetadataCollection.items.length) {
+      return data.seoMetadataCollection.items[0];
+    }
+    console.error(`No SEO metadata found for slug: ${slug}`);
+    return null;
+  } catch (error) {
+    console.error("Error fetching SEO metadata:", error);
+    return null;
+  }
+}
+
+export async function fetchAboutPage(id) {
+  const query = `
+    query GetAboutPage($id: String!) {
+      about(id: $id) {
+        title
+        image {
+          url
+        }
+        aboutMePresentation {
+          json
+        }
+        workExperience {
+          json
+        }
+        education {
+          json
+        }
+        funFacts {
+          json
+        }
+      }
+    }
+  `;
+
+  const variables = { id }; // Variabeln som skickas med
+
+  try {
+    const data = await client.request(query, variables);
+    return data.about;
+  } catch (error) {
+    console.error('Error fetching About Page:', error);
   }
 }

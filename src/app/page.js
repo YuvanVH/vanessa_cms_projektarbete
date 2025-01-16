@@ -1,6 +1,7 @@
 //src/app/page.js
-import { fetchPageHeader } from './lib/graphql'; // Importera fetchPageHeader
-import Header from './components/Header'; // Importera Header-komponenten
+import { fetchPageHeader } from './lib/graphql';
+import Header from './components/Header';
+import Head from 'next/head';
 
 // Funktion för att extrahera text från Contentfuls rich text format
 function extractSloganText(sloganJson) {
@@ -9,18 +10,18 @@ function extractSloganText(sloganJson) {
       .map(item => item.content?.map(subItem => subItem.value).join(' '))
       .join(' ');
   }
-  return ''; // Om ingen slogan finns, returnera en tom sträng
+  return ''; // Om ingen slogan finns, returnera tom sträng
 }
 
 export default async function Home() {
   // Hämta header-data för startsidan (t.ex. från Contentful)
-  const pageHeader = await fetchPageHeader('Welcome to My Portfolio'); // Här använder vi 'home' som pageSlug
+  const pageHeader = await fetchPageHeader('Welcome to My Portfolio');
 
   // Kontrollera att header-datan är korrekt
   const backgroundVideo = pageHeader.backgroundImage
     ? pageHeader.backgroundImage.url
-    : null; // Om ingen video finns, använd null
-  const logo = pageHeader.logo ? pageHeader.logo.url : '/default-logo.png'; // Använd en default logo om ingen finns
+    : null;
+  const logo = pageHeader.logo ? pageHeader.logo.url : '/default-logo.png';
 
   const slogan = pageHeader.slogan
     ? pageHeader.slogan.json.content
@@ -30,8 +31,19 @@ export default async function Home() {
       .join("\n")
     : "Default slogan";
 
+  const title = pageHeader.title || "Default Title";
+  const description = extractSloganText(pageHeader.slogan?.json) || "Default description";
+
   return (
     <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+      {/* Head-komponenten för att hantera meta-taggar */}
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+      </Head>
+
       {backgroundVideo && (
         <video
           autoPlay
@@ -44,7 +56,7 @@ export default async function Home() {
             width: '100%',
             height: '85vh',
             objectFit: 'cover',
-            zIndex: -1, // Se till att videon är i bakgrunden
+            zIndex: -1,
           }}
         >
           <source src={backgroundVideo} type="video/mp4" />
@@ -52,16 +64,11 @@ export default async function Home() {
         </video>
       )}
       <Header
-        title={pageHeader.title} // Dynamisk titel
-        slogan={slogan} // Dynamisk slogan
-        backgroundImage={null} // Ingen bakgrundsbild eftersom vi använder video
-        logo={logo} // Dynamisk logo
+        title={pageHeader.title}
+        slogan={slogan}
+        backgroundImage={null}
+        logo={logo}
       />
-      {/* Övrigt innehåll för startsidan */}
-      <div style={{ position: 'relative', zIndex: 1, color: 'white', textAlign: 'center', marginTop: '20%' }}>
-        <h2>Welcome to My Portfolio</h2>
-        <p>{slogan || 'Building the future, one project at a time.'}</p>
-      </div>
     </div>
   );
 }

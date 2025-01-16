@@ -19,12 +19,12 @@ export default function Header({ title, slogan, backgroundImage, logo }) {
                 (<Image
                   src={logo} // Logo som kommer från Contentful
                   alt="Logo image"
-                  width={164}  // Bildens storlek
-                  height={154} // Bildens storlek
+                  width={164}
+                  height={154}
                   priority // Prioritera denna bild för snabbare laddning
                 />)
               ) : (
-                (<span className={styles.logoText}>My Portfolio</span>) // Om ingen logo är tillgänglig, visa texten istället
+                (<span className={styles.logoText}>My Portfolio</span>) // Om ingen logo, visa text
               )}
             </Link>
 
@@ -49,7 +49,7 @@ export default function Header({ title, slogan, backgroundImage, logo }) {
 
           {/* Titel och slogan */}
           <div className={styles.heroContent}>
-            <h1>{title || 'Welcome'}</h1> {/* Dynamisk titel, om ingen titel finns använd 'Welcome' */}
+            <h1>{title || 'Welcome'}</h1>
             {slogan && <p className={styles.slogan}>{slogan}</p>} {/* Slogan visas om den finns */}
           </div>
         </div>

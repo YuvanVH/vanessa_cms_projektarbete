@@ -69,8 +69,6 @@ Innehållet i Headless-CMS-lösningen ska vara möjligt att administrera från e
 - Fyll på med genomförda projekt och information om er själva. Minst 5 olika portfolioprojekt ska presenteras. Om ni av någon anledning inte vill ange riktig information på webbplatsen så går det bra att använda fiktiv data. (Dock ej “lorem-ipsum”).
 
 
-
-
 ### För väl godkänt betyg (VG)
 Uppfyllda krav för godkänt betyg, samt:
 1. En sökfunktionimplementeras där användaren av portfoliowebbplatsen kan söka genom delar av webbplatsens innehåll. Sökfunktionen ska vara åtkomlig från valfri lämplig plats på webbplatsen samt på 404-sidan.
