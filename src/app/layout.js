@@ -2,6 +2,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import ScrollToTopButton from './components/ScrollToTopButton'; // Importera knappen
 import "./styles/globals.css";
+import Footer from "./components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,8 @@ export default function RootLayout({ children }) {
 
         {/* Lägg till knappen för att rulla upp */}
         <ScrollToTopButton />
+        {/* Footer-komponenten */}
+        <Footer />
       </body>
     </html>
   );

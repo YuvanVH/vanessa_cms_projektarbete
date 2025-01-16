@@ -1,49 +1,39 @@
 // src/app/components/GlobalSearchBar.js
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
-export default function GlobalSearchBar() {
-  const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState("");
+export default function Footer() {
+  const [footerData, setFooterData] = useState({
+    copyright: "Default ©",
+    searchEnabled: false,
+  });
 
-  const handleSearch = (event) => {
-    const newSearchTerm = event.target.value;
-    setSearchTerm(newSearchTerm);
-
-    // Uppdatera URL med sökparametern utan att ladda om sidan
-    const url = new URL(window.location.href);
-    url.searchParams.set("search", newSearchTerm);
-    router.push(url.pathname + url.search, { shallow: true });
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      // Navigera till sökresultatsidan när användaren trycker på Enter
-      const url = new URL(window.location.href);
-      url.pathname = "/search"; // Navigera till search-sidan
-      url.searchParams.set("search", searchTerm); // Lägg till sökparametern
-      router.push(url.pathname + url.search); // Navigera till sökresultatsidan
+  useEffect(() => {
+    if (!footerData.serverFetched) {
+      fetchFooter().then((data) => {
+        setFooterData((prevData) => ({
+          ...prevData,
+          ...data,
+          serverFetched: true, // Indikerar att vi har hämtat data från servern
+        }));
+      });
     }
-  };
+  }, [footerData]);
 
   return (
-    <input
-      type="text"
-      value={searchTerm}
-      placeholder="Search across the site..."
-      onChange={handleSearch}
-      onKeyDown={handleKeyPress} // Lägg till denna för att hantera Enter-tangenten
-      style={{
-        margin: "20px",
-        padding: "10px",
-        fontSize: "16px",
-        width: "100%",
-        maxWidth: "400px",
-        border: "1px solid #ccc",
-        borderRadius: "5px",
-      }}
-    />
+    <footer>
+      <div>{footerData.copyright}</div>
+      {footerData.searchEnabled && <SearchBar />}
+    </footer>
   );
+}
+
+// Mock för fetchFooter
+async function fetchFooter() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ copyright: "© 2025 Your Company", searchEnabled: true });
+    }, 1000);
+  });
 }

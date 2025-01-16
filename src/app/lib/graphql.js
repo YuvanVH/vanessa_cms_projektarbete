@@ -328,3 +328,60 @@ export async function fetchAboutPage(id) {
     console.error('Error fetching About Page:', error);
   }
 }
+
+export async function fetchContactData() {
+  const query = `
+    query GetContact {
+      contactCollection(limit: 1) {
+        items {
+          title
+          phoneNumber
+          email
+          linkedinProfile {
+            json
+          }
+          location {
+            lat
+            lon
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await client.request(query);
+    return data.contactCollection.items[0] || null; // Returnerar första kontakten eller null
+  } catch (error) {
+    console.error('Error fetching contact data:', error);
+    return null; // Hantera fel
+  }
+}
+
+// Fetch footer data
+export async function fetchFooter() {
+  const query = `
+    query GetFooter {
+      pageFooterCollection(limit: 1) {
+        items {
+          contactInfo {
+            json
+          }
+          copyright
+          logo {
+            url
+          }
+          searchEnabled
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await client.request(query);
+    return data.pageFooterCollection.items[0] || null;
+  } catch (error) {
+    console.error("Error fetching footer data:", error);
+    return null;
+  }
+}
