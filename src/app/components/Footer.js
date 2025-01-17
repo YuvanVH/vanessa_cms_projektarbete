@@ -25,7 +25,7 @@ export default async function Footer() {
           </a>
         );
       }
-      // Annars, om det är vanlig text
+      // Annars, om vanlig text
       if (item.nodeType === "text") {
         return item.value;
       }
@@ -36,7 +36,7 @@ export default async function Footer() {
   return (
     <footer className={styles.footer}>
       <div>
-        {footerData.logo && <img src={footerData.logo.url} alt="Logo" />}
+        {footerData.logo && <img src={footerData.logo.url} alt="Logotype in footer" />}
       </div>
       <hr></hr>
       <div>
