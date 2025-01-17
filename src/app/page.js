@@ -13,15 +13,6 @@ function extractRichText(json) {
   return '';
 }
 
-//förhindra auto uppspeling på mobil
-if (window.innerWidth <= 600) {
-  const videoElement = document.querySelector('video');
-  if (videoElement) {
-    videoElement.controls = false; // Tar bort kontroller
-    videoElement.play(); // Se till att videon spelar upp utan att pausa
-  }
-}
-
 export default async function Home() {
   // Hämta header-data och home-data
   const pageHeader = await fetchPageHeader('Welcome to My Portfolio');
@@ -51,6 +42,33 @@ export default async function Home() {
         <meta name="description" content={presentation} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={presentation} />
+        <meta property="og:image" content={media} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_BASE_URL} />
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={presentation} />
+        <meta name="twitter:image" content={media} />
+        {/* Canonical Link */}
+        <link rel="canonical" href={process.env.NEXT_PUBLIC_BASE_URL} />
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "name": "${title}",
+              "description": "${presentation}",
+              "image": "${media}",
+              "url": "${process.env.NEXT_PUBLIC_BASE_URL}",
+              "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "${process.env.NEXT_PUBLIC_BASE_URL}"
+              }
+            }
+          `}
+        </script>
       </Head>
 
       {backgroundVideo && (
@@ -92,7 +110,7 @@ export default async function Home() {
         >
           {presentation}
         </p>
-        {media && <img src={media} alt={title} style={{ margin: '50px ', maxWidth: '70%' }} />}
+        {media && <img src={media} alt={`Image for ${title}`} style={{ margin: '50px ', maxWidth: '70%' }} />}
       </main>
     </div>
   );
