@@ -2,9 +2,9 @@
 import { fetchPageHeader, fetchAboutPage } from '../lib/graphql';
 import Header from '../components/Header';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import styles from '../styles/about.module.css';
 
 export default async function AboutPage() {
-  // Hämta sidhuvudet
   const PageHeader = await fetchPageHeader('About Me');
   const backgroundImage = PageHeader.backgroundImage
     ? PageHeader.backgroundImage.url
@@ -18,7 +18,6 @@ export default async function AboutPage() {
       .join("\n")
     : "Default slogan";
 
-  // Hämta "About Me"-sidan
   const AboutData = await fetchAboutPage('28vMeOSP92wmCwDcCBAF1T');
 
   return (
@@ -30,46 +29,57 @@ export default async function AboutPage() {
         logo={logo}
       />
 
-      {/* Rendera datan från Contentful */}
-      <div>
-        <h3>{AboutData?.title || 'About Me'}</h3>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h3 className={styles.title}>{AboutData?.title || 'About Me'}</h3>
+        </div>
 
         {/* About Me Presentation */}
         {AboutData?.aboutMePresentation?.json && (
-          <div>
-            {documentToReactComponents(AboutData.aboutMePresentation.json)}
+          <div className={styles.section}>
+            <div className={styles.sectionTitle}>About Me</div>
+            <div className={styles.richText}>
+              {documentToReactComponents(AboutData.aboutMePresentation.json)}
+            </div>
           </div>
         )}
 
         {/* Bild */}
-        <div>
-          {AboutData?.image?.url && (
-            <img style={{
-              width: "50%",
-              maxHeight: "300px",
-              objectFit: "cover",
-            }} src={AboutData.image.url} alt="About me" />
-          )}
-        </div>
-
-        {/* Work Experience */}
-        {AboutData?.workExperience?.json && (
-          <div>
-            {documentToReactComponents(AboutData.workExperience.json)}
-          </div>
+        {AboutData?.image?.url && (
+          <img
+            className={styles.image}
+            src={AboutData.image.url}
+            alt="About me"
+          />
         )}
 
         {/* Education */}
         {AboutData?.education?.json && (
-          <div>
-            {documentToReactComponents(AboutData.education.json)}
+          <div className={styles.section}>
+            <div className={styles.sectionTitle}>Education</div>
+            <div className={styles.richText}>
+              {documentToReactComponents(AboutData.education.json)}
+            </div>
+          </div>
+        )}
+
+        {/* Work Experience */}
+        {AboutData?.workExperience?.json && (
+          <div className={styles.section}>
+            <div className={styles.sectionTitle}>Work Experience</div>
+            <div className={styles.richText}>
+              {documentToReactComponents(AboutData.workExperience.json)}
+            </div>
           </div>
         )}
 
         {/* Fun Facts */}
         {AboutData?.funFacts?.json && (
-          <div>
-            {documentToReactComponents(AboutData.funFacts.json)}
+          <div className={styles.section}>
+            <div className={styles.sectionTitle}>Fun Facts</div>
+            <div className={styles.richText}>
+              {documentToReactComponents(AboutData.funFacts.json)}
+            </div>
           </div>
         )}
       </div>

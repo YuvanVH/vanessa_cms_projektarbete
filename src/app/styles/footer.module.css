@@ -1,0 +1,47 @@
+/* src/app/styles/footer.module.css */
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.footer img {
+  max-width: 150px;
+  margin-bottom: 0px;
+}
+
+.footer p {
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.footer a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer .contact-info {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.footer .contact-info p {
+  margin-bottom: 5px;
+}
+
+.footer .contact-info a {
+  color: #66ccff;
+  transition: color 0.3s ease;
+}
+
+.footer .contact-info a:hover {
+  color: #ffcc00;
+}

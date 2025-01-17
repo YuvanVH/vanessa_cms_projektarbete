@@ -295,6 +295,33 @@ export async function fetchSEOMetadata(slug) {
   }
 }
 
+export async function fetchHomeData() {
+  const query = `
+    query GetHomePage {
+      homeCollection(limit: 1) {
+        items {
+          title
+          slug
+          media {
+            url
+          }
+          presentation {
+            json
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await client.request(query);
+    return data.homeCollection.items[0] || null;
+  } catch (error) {
+    console.error("Error fetching home page data:", error);
+    return null;
+  }
+}
+
 export async function fetchAboutPage(id) {
   const query = `
     query GetAboutPage($id: String!) {

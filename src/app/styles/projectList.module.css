@@ -1,0 +1,97 @@
+/* projectsList.module.css */
+
+.projectContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 3rem;
+  padding: 1.5rem;
+  border: rgb(92, 92, 92) solid;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(146, 146, 146, 0.1);
+}
+
+.projectContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.projectImage {
+  flex: 0 0 300px;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.projectText {
+  flex: 1;
+  gap: 1rem;
+}
+
+.projectTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.projectDescription {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  color: rgb(246, 208, 113);
+}
+
+/* Gemensam stil för alla länkar */
+.link {
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: text-decoration 0.3s ease;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* För mindre text, tex kategori */
+.text-sm {
+  font-size: 0.9rem;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+/* Media query för små skärmar */
+@media screen and (max-width: 650px) {
+  .projectContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .projectImage {
+    flex: 0 0 100%;
+    margin-bottom: 1rem;
+  }
+
+  .projectText {
+    flex: 1;
+  }
+
+  .projectTitle {
+    font-size: 1.2rem;
+  }
+
+  .projectDescription {
+    font-size: 1rem;
+  }
+
+  .link {
+    font-size: 1rem;
+  }
+}

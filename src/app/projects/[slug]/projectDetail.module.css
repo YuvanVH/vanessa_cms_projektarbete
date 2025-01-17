@@ -1,0 +1,84 @@
+/* src/app/projects/[slug]/project-detail.module.css */
+
+/* Container för projektet */
+.container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Titel */
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Beskrivning */
+.description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #dfdfdf;
+  margin-top: 1.5rem;
+}
+
+/* Länk till kategori */
+.category-link {
+  font-size: 1.1rem;
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 1rem;
+}
+
+.category-link:hover {
+  text-decoration: underline;
+}
+
+/* Projektlänk */
+.project-link {
+  display: inline-block;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: #007bff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.project-link:hover {
+  background-color: #0056b3;
+}
+
+/* Bildgalleri */
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.image-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* För större bilder */
+.image-item img:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .projects-list {
+    flex-wrap: wrap;
+    /* Tillåt projekten att bryta rad på små skärmar */
+  }
+
+  .project-item {
+    min-width: 100%;
+    /* Gör projekten fullbredd på små skärmar */
+  }
+}

@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import styles from '../styles/projectList.module.css'; // Importera CSS-modulen
 
 // Komponent för att lista och filtrera projekt
 export default function ProjectsList({ projects }) {
@@ -9,47 +10,67 @@ export default function ProjectsList({ projects }) {
     <div>
       {projects.length > 0 ? (
         projects.map((project) => (
-          <div key={project.sys.id}>
-            <h3>{project.projectTitle || "Untitled Project"}</h3>
-            <p>{project.shortDescription || "No description available"}</p>
-
-            {/* Lägg till kategori-länk */}
-            {project.categoryCollection?.items && (
-              <p>
-                Category:{" "}
-                {project.categoryCollection.items.map((category) => (
-                  <Link
-                    key={category.slug}
-                    href={`/category/${category.slug}`}
-                    className="text-blue-500 underline"
-                  >
-                    {category.title}
+          <div key={project.sys.id} className={styles.projectContainer}>
+            <div className={styles.projectContent}>
+              {/* Bilden */}
+              {project.projectImageCollection?.items?.[0]?.url && (
+                <div className={styles.projectImage}>
+                  <Link href={`/projects/${project.slug}`}>
+                    <img
+                      src={project.projectImageCollection.items[0].url}
+                      alt={project.projectImageCollection.items[0].title || "Project Image"}
+                      className={styles.image}
+                    />
                   </Link>
-                ))}
-              </p>
-            )}
+                </div>
+              )}
 
-            {project.projectImageCollection?.items?.[0]?.url && (
-              <img
-                src={project.projectImageCollection.items[0].url}
-                alt={project.projectImageCollection.items[0].title || "Project Image"}
-                style={{
-                  width: "50%",
-                  maxHeight: "500px",
-                  objectFit: "cover",
-                }}
-              />
-            )}
-            <Link href={project.projectLink}>View Github</Link>
+              {/* Text och länk */}
+              <div className={styles.projectText}>
+                <h3 className={styles.projectTitle}>
+                  {project.projectTitle || "Untitled Project"}
+                </h3>
+                <p className={styles.projectDescription}>
+                  {project.shortDescription || "No description available"}
+                </p>
 
-            {/* Visa projekt-länk */}
-            <Link href={`/projects/${project.slug}`} className="text-blue-500 underline">
-              View Project
-            </Link>
+                {/* Kategorilänk */}
+                {project.categoryCollection?.items && (
+                  <p className="text-sm text-gray-500">
+                    Category:{" "}
+                    {project.categoryCollection.items.map((category, index) => (
+                      <span key={category.slug} className="text-blue-500 underline">
+                        <Link href={`/category/${category.slug}`}>
+                          <strong>
+                            {category.title}
+                          </strong>
+                        </Link>
+                        {/* Mellanslag mellan kategorier */}
+                        {index < project.categoryCollection.items.length - 1 && ' '}
+                      </span>
+                    ))}
+                  </p>
+                )}
+
+                {project.projectLink && (
+                  <div>
+                    <a href={project.projectLink} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                      View in GitHub
+                    </a>
+                  </div>
+                )}
+
+                {/* Projektlänk */}
+                <Link href={`/projects/${project.slug}`} className={styles.link}>
+                  View Project
+                </Link>
+
+              </div>
+            </div>
           </div>
         ))
       ) : (
-        <p>No projects found.</p>
+        <p>No projects where found.</p>
       )}
     </div>
   );

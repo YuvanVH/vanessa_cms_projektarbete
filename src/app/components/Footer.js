@@ -1,4 +1,6 @@
+// src/app/components/Footer.js
 import { fetchFooter } from "../lib/graphql";
+import styles from "../styles/footer.module.css"; // Importera CSS-modulen
 
 export default async function Footer() {
   const footerData = await fetchFooter();
@@ -32,19 +34,18 @@ export default async function Footer() {
   };
 
   return (
-    <footer>
+    <footer className={styles.footer}>
       <div>
         {footerData.logo && <img src={footerData.logo.url} alt="Logo" />}
       </div>
+      <hr></hr>
       <div>
         <p>{footerData.copyright}</p>
       </div>
-      <div>
+      <div className={styles.contactInfo}>
         {footerData.contactInfo &&
           footerData.contactInfo.json.content.map((block, index) => (
-            <p key={index}>
-              {extractTextFromContent(block.content)}
-            </p>
+            <p key={index}>{extractTextFromContent(block.content)}</p>
           ))}
       </div>
     </footer>

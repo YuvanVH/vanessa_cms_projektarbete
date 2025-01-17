@@ -1,47 +1,46 @@
-//src/app/page.js
-import { fetchPageHeader } from './lib/graphql';
+import { fetchPageHeader, fetchHomeData } from './lib/graphql';
 import Header from './components/Header';
 import Head from 'next/head';
 
 // Funktion för att extrahera text från Contentfuls rich text format
-function extractSloganText(sloganJson) {
-  if (sloganJson && sloganJson.content) {
-    return sloganJson.content
-      .map(item => item.content?.map(subItem => subItem.value).join(' '))
+function extractRichText(json) {
+  if (json && json.content) {
+    return json.content
+      .map(block => block.content?.map(subBlock => subBlock.value).join(' '))
       .join(' ');
   }
-  return ''; // Om ingen slogan finns, returnera tom sträng
+  return '';
 }
 
 export default async function Home() {
-  // Hämta header-data för startsidan (t.ex. från Contentful)
+  // Hämta header-data och home-data
   const pageHeader = await fetchPageHeader('Welcome to My Portfolio');
+  const homeData = await fetchHomeData();
 
-  // Kontrollera att header-datan är korrekt
+  // Kontrollera att data hämtades korrekt
+  const title = homeData?.title || 'Default Title';
+  const slug = homeData?.slug || 'default-slug';
+  const media = homeData?.media ? homeData.media.url : '/default-image.jpg';
+  const presentation = extractRichText(homeData?.presentation?.json) || 'Default presentation text';
+
   const backgroundVideo = pageHeader.backgroundImage
     ? pageHeader.backgroundImage.url
     : null;
   const logo = pageHeader.logo ? pageHeader.logo.url : '/default-logo.png';
-
   const slogan = pageHeader.slogan
     ? pageHeader.slogan.json.content
-      .map((block) =>
-        block.content.map((innerBlock) => innerBlock.value).join("")
-      )
-      .join("\n")
-    : "Default slogan";
-
-  const title = pageHeader.title || "Default Title";
-  const description = extractSloganText(pageHeader.slogan?.json) || "Default description";
+      .map(block => block.content.map(innerBlock => innerBlock.value).join(''))
+      .join('\n')
+    : 'Default slogan';
 
   return (
-    <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+    <div>
       {/* Head-komponenten för att hantera meta-taggar */}
       <Head>
         <title>{title}</title>
-        <meta name="description" content={description} />
+        <meta name="description" content={presentation} />
         <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
+        <meta property="og:description" content={presentation} />
       </Head>
 
       {backgroundVideo && (
@@ -56,6 +55,7 @@ export default async function Home() {
             width: '100%',
             height: '85vh',
             objectFit: 'cover',
+            maxHeight: '85vh',
             zIndex: -1,
           }}
         >
@@ -69,6 +69,21 @@ export default async function Home() {
         backgroundImage={null}
         logo={logo}
       />
+      {/* Lägg till homeData-innehåll */}
+      <main style={{ padding: '2rem', textAlign: 'center' }}>
+        <h1>{title}</h1>
+        <p
+          style={{
+            fontSize: '17px',
+            lineHeight: '1.6',
+            margin: '20px auto',
+            maxWidth: '600px',
+          }}
+        >
+          {presentation}
+        </p>
+        {media && <img src={media} alt={title} style={{ margin: '50px ', maxWidth: '70%' }} />}
+      </main>
     </div>
   );
 }

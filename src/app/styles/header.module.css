@@ -1,5 +1,12 @@
 /* app/styles/header.module.css */
 
+.heroContent h1 {
+  font-family: 'YourNewFont', sans-serif;
+  font-size: clamp(42px, 7vw, 78px);
+  font-weight: bold;
+  margin: 0 3vh;
+}
+
 .hero {
   position: relative;
   height: 85vh;
@@ -18,7 +25,15 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  /* Mörklägger bakgrunden */
+}
+
+/* Justera överläggets höjd beroende på om bakgrunden är en video */
+.hero.video-background .overlay {
+  height: 200%;
+}
+
+.hero.image-background .overlay {
+  height: 100%;
 }
 
 .container {
@@ -32,6 +47,8 @@
   gap: 20px;
   align-items: center;
   margin-top: 2vh;
+  margin-left: 3vh;
+  margin-right: 3vh;
 }
 
 .logoHeader {
@@ -42,6 +59,7 @@
 
 .logoHeader img {
   transition: transform 0.3s ease;
+  max-width: 100%;
 }
 
 .logoHeader:hover img {
@@ -71,39 +89,33 @@
   transition: color 0.3s ease;
 }
 
-/* Skapa understräckning som en pseudoklass */
 .mainMenu ul li a::after {
   content: '';
   position: absolute;
   left: 0;
   bottom: -2px;
-  /* Placera streck under texten */
   width: 0;
   height: 2px;
   background-color: #fff;
   transition: width 0.3s ease;
 }
 
-/* Strecket blir synligt vid hover */
 .mainMenu ul li a:hover {
   color: #fad46a;
 }
 
 .mainMenu ul li a:hover::after {
   width: 100%;
-  /* Strecket sträcker sig över hela länken */
 }
 
-/* Se till att ingen understräckning visas på titel eller slogan */
 .heroContent h1,
 .heroContent p {
   text-decoration: none;
-  /* Inget understräck här */
   position: relative;
 }
 
 .heroContent {
-  margin-top: 3em;
+  margin-top: 5em;
 }
 
 .heroContent h1 {
@@ -116,4 +128,67 @@
   font-weight: 300;
   color: #ffd86e;
   margin-top: 10px;
+}
+
+.mainMenuHeaderContainer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+  margin-top: 2vh;
+  margin-left: 3vh;
+  margin-right: 3vh;
+}
+
+@media screen and (max-width: 500px) {
+  .mainMenuHeaderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logoHeader img {
+    width: 120px;
+    height: auto;
+  }
+
+  .mainMenu ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mainMenu ul li a {
+    font-size: 16px;
+  }
+
+  .hero {
+    height: 65vh;
+  }
+
+  .slogan {
+    font-size: 18px;
+    color: #ffd86e;
+    margin: 10px, 3vh;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .hero.video-background.overlay {
+    height: 200%;
+  }
+
+  .hero.image-background .overlay {
+    height: 100%;
+  }
 }
