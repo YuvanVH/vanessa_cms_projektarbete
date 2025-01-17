@@ -1,3 +1,4 @@
+//src/app/page.js
 import { fetchPageHeader, fetchHomeData } from './lib/graphql';
 import Header from './components/Header';
 import Head from 'next/head';

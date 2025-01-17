@@ -1,10 +1,6 @@
 // src/app/lib/graphql.js
 import { GraphQLClient } from 'graphql-request';
 
-// console.log("CONTENTFUL_ACCESS_TOKEN:", process.env.CONTENTFUL_ACCESS_TOKEN);
-
-// console.log(process.env);
-
 const client = new GraphQLClient(
   'https://graphql.contentful.com/content/v1/spaces/dwkm02rqep4b',
   {
@@ -13,6 +9,11 @@ const client = new GraphQLClient(
     },
   }
 );
+
+//Vercel
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+
+const apiURL = `${baseURL}/api/some-endpoint`;
 
 // Funktion för att hämta alla kategorier
 export async function fetchCategories() {
