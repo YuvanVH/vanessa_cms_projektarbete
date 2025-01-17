@@ -13,6 +13,15 @@ function extractRichText(json) {
   return '';
 }
 
+//förhindra auto uppspeling på mobil
+if (window.innerWidth <= 600) {
+  const videoElement = document.querySelector('video');
+  if (videoElement) {
+    videoElement.controls = false; // Tar bort kontroller
+    videoElement.play(); // Se till att videon spelar upp utan att pausa
+  }
+}
+
 export default async function Home() {
   // Hämta header-data och home-data
   const pageHeader = await fetchPageHeader('Welcome to My Portfolio');
