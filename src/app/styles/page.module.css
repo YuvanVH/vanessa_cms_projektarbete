@@ -209,6 +209,22 @@ a.secondary {
     align-items: center;
     justify-content: center;
   }
+
+  @media (max-width: 600px) {
+    video {
+      object-fit: cover;
+      height: 60vh;
+      /* Anpassa höjden för mobilen */
+      width: 100%;
+      position: fixed;
+      /* Gör den fix för att stanna på plats */
+      top: 0;
+      left: 0;
+      z-index: -1;
+      pointer-events: none;
+      /* Förhindrar att videon interagerar med användaren */
+    }
+  }
 }
 
 .logo {
