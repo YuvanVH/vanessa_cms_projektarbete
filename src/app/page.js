@@ -45,11 +45,6 @@ export default async function Home() {
         <meta property="og:image" content={media} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_BASE_URL} />
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={presentation} />
-        <meta name="twitter:image" content={media} />
         {/* Canonical Link */}
         <link rel="canonical" href={process.env.NEXT_PUBLIC_BASE_URL} />
         {/* Structured Data (JSON-LD) */}

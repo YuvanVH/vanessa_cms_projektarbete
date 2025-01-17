@@ -31,12 +31,6 @@ export const metadata = {
       },
     ],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "My Portfolio",
-    description: "Showcasing my projects and skills.",
-    image: "/default-image.jpg",
-  },
 };
 
 export default function RootLayout({ children }) {
@@ -50,10 +44,6 @@ export default function RootLayout({ children }) {
         <meta property="og:description" content={metadata.openGraph.description} />
         <meta property="og:url" content={metadata.openGraph.url} />
         <meta property="og:image" content={metadata.openGraph.images[0].url} />
-        <meta name="twitter:card" content={metadata.twitter.card} />
-        <meta name="twitter:title" content={metadata.twitter.title} />
-        <meta name="twitter:description" content={metadata.twitter.description} />
-        <meta name="twitter:image" content={metadata.twitter.image} />
         <link rel="canonical" href={baseUrl} />
       </head>
       <body>
