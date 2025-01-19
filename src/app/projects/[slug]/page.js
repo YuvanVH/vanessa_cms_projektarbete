@@ -1,3 +1,4 @@
+//src/app/projects/[slug]/page.js
 import { fetchProjectBySlug } from '../../lib/graphql';
 import Header from '../../components/Header';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
