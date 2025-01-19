@@ -68,10 +68,18 @@ export default async function Home() {
 
       {backgroundVideo && (
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
-          playsInline // Lägg till detta för att undvika helskärmsläge på mobilen
+          playsInline
+          onLoadedData={() => {
+            if (videoRef.current) {
+              videoRef.current.play().catch((error) => {
+                console.error("Autoplay failed:", error);
+              });
+            }
+          }}
           style={{
             position: 'absolute',
             top: 0,
@@ -82,7 +90,6 @@ export default async function Home() {
             zIndex: -1,
           }}
         >
-          {/* fallback */}
           <source src={backgroundVideo} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
