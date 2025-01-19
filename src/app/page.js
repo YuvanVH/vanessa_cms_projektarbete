@@ -68,33 +68,26 @@ export default async function Home() {
 
       {backgroundVideo && (
         <video
-          ref={videoRef}
           autoPlay
           muted
-          loop
           playsInline
-          onLoadedData={() => {
-            if (videoRef.current) {
-              videoRef.current.play().catch((error) => {
-                console.error("Autoplay failed:", error);
-              });
-            }
-          }}
+          loop
           style={{
             position: 'absolute',
             top: 0,
             left: 0,
             width: '100%',
-            height: '100%',
+            height: '85vh',
             objectFit: 'cover',
+            maxHeight: '85vh',
             zIndex: -1,
           }}
         >
+          {/* fallback */}
           <source src={backgroundVideo} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       )}
-
       <Header
         title={pageHeader.title}
         slogan={slogan}
