@@ -26,7 +26,8 @@ export default function SearchBar({ initialSearchTerm, onSearch }) {
           onChange={handleSearchChange}
           placeholder="Search projects..."
           style={{
-            margin: "10px",
+            marginTop: "60px",
+            marginBottom: "20px",
             padding: "10px 40px 10px 10px",
             fontSize: "16px",
             border: "1px solid #ccc",
@@ -39,8 +40,8 @@ export default function SearchBar({ initialSearchTerm, onSearch }) {
             onClick={handleClearSearch}
             style={{
               position: "absolute",
-              right: "25px",
-              top: "50%",
+              right: "15px",
+              top: "67%",
               transform: "translateY(-50%)",
               border: "none",
               background: "transparent",

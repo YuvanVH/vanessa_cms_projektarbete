@@ -52,6 +52,8 @@ export default function ProjectsList({ projects }) {
                   </p>
                 )}
 
+                <hr className="projectHrDevider"></hr>
+
                 {project.projectLink && (
                   <div>
                     <a href={project.projectLink} target="_blank" rel="noopener noreferrer" className={styles.link}>
@@ -70,7 +72,7 @@ export default function ProjectsList({ projects }) {
           </div>
         ))
       ) : (
-        <p>No projects where found.</p>
+        <p className={styles.projectFoundText}>No projects where found.</p>
       )}
     </div>
   );

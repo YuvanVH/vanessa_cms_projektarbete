@@ -58,12 +58,18 @@
 }
 
 /* För mindre text, tex kategori */
+
 .text-sm {
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .text-gray-500 {
   color: #6b7280;
+}
+
+.projectFoundText {
+  text-align: center;
+  margin: 5vh;
 }
 
 /* Media query för små skärmar */

@@ -39,14 +39,14 @@ export default async function Footer() {
         {footerData.logo && <img src={footerData.logo.url} alt="Logotype in footer" />}
       </div>
       <hr></hr>
-      <div>
-        <p>{footerData.copyright}</p>
-      </div>
       <div className={styles.contactInfo}>
         {footerData.contactInfo &&
           footerData.contactInfo.json.content.map((block, index) => (
             <p key={index}>{extractTextFromContent(block.content)}</p>
           ))}
+        <div>
+          <p>{footerData.copyright}</p>
+        </div>
       </div>
     </footer>
   );

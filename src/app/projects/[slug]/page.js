@@ -46,7 +46,8 @@ export default async function ProjectDetail(props) {
         )}
 
         {/* Rendera full beskrivning */}
-        <div className={styles.description}>{renderFullDescription}</div>
+        <div className={styles.description}>{renderFullDescription}
+        </div>
 
         {/* Visa projektlänk */}
         {project?.projectLink && (
